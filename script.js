@@ -1,28 +1,11 @@
-const form = document.getElementById('contactForm');
-const status = document.getElementById('status');
+const backendUrl = "https://web-page-backend-du9q.onrender.com";
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const formData = {
-    name: form.name.value,
-    email: form.email.value,
-    message: form.message.value
-  };
-
-  try {
-    const response = await fetch('/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-
-    const result = await response.json();
-    status.textContent = result.message;
-    status.style.color = 'green';
-    form.reset();
-  } catch (error) {
-    status.textContent = 'Error sending message!';
-    status.style.color = 'red';
-  }
-});
+fetch(${backendUrl}/api/message)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("msg").innerText = data.message;
+  })
+  .catch(err => {
+    console.error("Error fetching backend:", err);
+    document.getElementById("msg").innerText = "Failed to load message.";
+  });
